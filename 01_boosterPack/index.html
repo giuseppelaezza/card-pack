@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Booster Pack</title>
+<link rel="stylesheet" href="boosterPack.css">
+</head>
+<body>
+<aside id="panel">
+  <header>
+    <div class="logo"><i></i>Booster Pack</div>
+    <span class="pill" id="pill">Front</span>
+  </header>
+
+  <section>
+    <h3>Artwork</h3>
+    <div id="slots"></div>
+    <div class="row">
+      <div class="lab"><span>Fit artwork to its area</span></div>
+      <div class="seg" data-seg="fit">
+        <button data-v="fill">Stretch</button>
+        <button data-v="cover">Cover</button>
+        <button data-v="contain">Contain</button>
+      </div>
+    </div>
+    <p class="hint">PNG with alpha: transparent pixels show the pack material underneath. Drop an image on a slot, or on the pack (it goes to the side you are looking at).</p>
+  </section>
+
+  <section>
+    <h3>Material</h3>
+
+    <div class="matblock">
+      <div class="matblock-head"><b>Pack film</b><span>the bag itself · shows where the artwork is transparent</span></div>
+      <div class="seg" data-seg="mat">
+        <button data-v="metal">Metallic</button>
+        <button data-v="foil">Foil</button>
+        <button data-v="matte">Matte</button>
+      </div>
+      <div id="packFoil">
+        <div class="row"><select class="foil-type" data-k="foilType"></select></div>
+        <div class="row">
+          <div class="lab"><span>Pattern size</span><output data-o="foilSize"></output></div>
+          <input type="range" data-k="foilSize" min="4" max="120" step="1">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Pattern density</span><output data-o="foilDensity"></output></div>
+          <input type="range" data-k="foilDensity" min="1" max="40" step="0.5">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Relief</span><output data-o="foilRelief"></output></div>
+          <input type="range" data-k="foilRelief" min="0" max="3" step="0.01">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Colour shift with the angle</span><output data-o="foilShift"></output></div>
+          <input type="range" data-k="foilShift" min="0" max="3" step="0.01">
+        </div>
+        <button class="btn row" id="foilShuffle">Shuffle pattern</button>
+      </div>
+      <div class="two row">
+        <label class="color"><input type="color" data-k="baseColor"><span>Colour / tint</span></label>
+        <button class="btn" id="matReset">Reset</button>
+      </div>
+      <div class="row">
+        <div class="lab"><span>Roughness</span><output data-o="baseRough"></output></div>
+        <input type="range" data-k="baseRough" min="0.02" max="1" step="0.01">
+      </div>
+    </div>
+
+    <div class="matblock" id="fillBlock">
+      <div class="matblock-head"><b>Artwork fill</b><span>the shapes of artwork set to Alpha → fill · independent from the pack film</span></div>
+      <p class="hint" id="fillUsedBy"></p>
+      <div class="seg" data-seg="fMat">
+        <button data-v="ink">Ink</button>
+        <button data-v="metal">Metallic</button>
+        <button data-v="foil">Foil</button>
+        <button data-v="matte">Matte</button>
+      </div>
+      <div id="fillFoil">
+        <div class="row"><select class="foil-type" data-k="fFoilType"></select></div>
+        <div class="row">
+          <div class="lab"><span>Pattern size</span><output data-o="fFoilSize"></output></div>
+          <input type="range" data-k="fFoilSize" min="4" max="120" step="1">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Pattern density</span><output data-o="fFoilDensity"></output></div>
+          <input type="range" data-k="fFoilDensity" min="1" max="40" step="0.5">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Relief</span><output data-o="fFoilRelief"></output></div>
+          <input type="range" data-k="fFoilRelief" min="0" max="3" step="0.01">
+        </div>
+        <div class="row">
+          <div class="lab"><span>Colour shift with the angle</span><output data-o="fFoilShift"></output></div>
+          <input type="range" data-k="fFoilShift" min="0" max="3" step="0.01">
+        </div>
+        <button class="btn row" id="fFoilShuffle">Shuffle pattern</button>
+      </div>
+      <div class="two row">
+        <label class="color"><input type="color" data-k="fColor"><span>Colour / tint</span></label>
+        <button class="btn" id="fMatReset">Reset</button>
+      </div>
+      <div class="row">
+        <div class="lab"><span>Roughness</span><output data-o="fRough"></output></div>
+        <input type="range" data-k="fRough" min="0.02" max="1" step="0.01">
+      </div>
+    </div>
+
+    <div class="matblock plain">
+      <div class="matblock-head"><b>Print &amp; laminate</b><span>full-colour artwork · gloss film over everything</span></div>
+      <div class="row">
+        <div class="lab"><span>Print roughness (full colour)</span><output data-o="inkRough"></output></div>
+        <input type="range" data-k="inkRough" min="0.02" max="1" step="0.01">
+      </div>
+      <div class="row">
+        <div class="lab"><span>Gloss laminate</span><output data-o="lam"></output></div>
+        <input type="range" data-k="lam" min="0" max="1" step="0.01">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Material textures <span class="pill" id="fxCount">0 / 4</span></h3>
+    <div id="fxList"></div>
+    <button class="btn" id="fxAdd">+ Add texture (foil, holo, emboss, watermark…)</button>
+    <p class="hint" style="margin-top:8px">A texture is a mask laid over the whole face: white / opaque = effect on. It changes the material on top of the artwork.</p>
+  </section>
+
+  <section>
+    <h3>Pack shape</h3>
+    <div class="two row">
+      <div><div class="lab"><span>Width (mm)</span></div><input type="number" data-k="W" min="30" max="300" step="1"></div>
+      <div><div class="lab"><span>Height (mm)</span></div><input type="number" data-k="H" min="30" max="400" step="1"></div>
+    </div>
+    <div class="row">
+      <div class="lab"><span>Seals</span></div>
+      <select data-k="layout">
+        <option value="v">Crimps top + bottom · back flap vertical</option>
+        <option value="h">Crimps left + right · back flap horizontal</option>
+      </select>
+    </div>
+    <button class="btn row" id="ratioBtn">Height from the front image proportions</button>
+    <div class="row">
+      <div class="lab"><span>Puffiness</span><output data-o="puff"></output></div>
+      <input type="range" data-k="puff" min="0" max="12" step="0.1">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Crimp seal depth</span><output data-o="crimp"></output></div>
+      <input type="range" data-k="crimp" min="2" max="25" step="0.5">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Crimp → body transition</span><output data-o="trans"></output></div>
+      <input type="range" data-k="trans" min="2" max="40" step="0.5">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Serration pitch</span><output data-o="pitch"></output></div>
+      <input type="range" data-k="pitch" min="0.4" max="4" step="0.05">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Cut teeth depth</span><output data-o="teeth"></output></div>
+      <input type="range" data-k="teeth" min="0" max="4" step="0.05">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Serration relief</span><output data-o="ridge"></output></div>
+      <input type="range" data-k="ridge" min="0" max="2" step="0.01">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Wrinkles</span><output data-o="wrinkle"></output></div>
+      <input type="range" data-k="wrinkle" min="0" max="2" step="0.01">
+    </div>
+    <h4>Back flap (fin seal)</h4>
+    <div class="row">
+      <div class="lab"><span>Flap width</span><output data-o="flapW"></output></div>
+      <input type="range" data-k="flapW" min="0" max="25" step="0.5">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Folded over</span></div>
+      <div class="seg" data-seg="flapSide">
+        <button data-v="A" id="flapSideA">Half A</button>
+        <button data-v="B" id="flapSideB">Half B</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="lab"><span>Lift the flap</span><output data-o="flapOpen"></output></div>
+      <input type="range" data-k="flapOpen" min="0" max="120" step="1">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Flap surface</span></div>
+      <select data-k="flapMode">
+        <option value="0">Plain material (unprinted)</option>
+        <option value="1">Continue the back artwork</option>
+        <option value="2">Flap image (slot above)</option>
+      </select>
+    </div>
+    <label class="check"><input type="checkbox" data-k="guides">Show guides (crimps, safe margin, flap)</label>
+  </section>
+
+  <section>
+    <h3>Scene</h3>
+    <div class="seg" data-seg="env">
+      <button data-v="studio">Studio light</button>
+      <button data-v="room">Soft room</button>
+    </div>
+    <div class="row">
+      <div class="lab"><span>Light intensity</span><output data-o="envInt"></output></div>
+      <input type="range" data-k="envInt" min="0" max="3" step="0.01">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Light rotation</span><output data-o="envRot"></output></div>
+      <input type="range" data-k="envRot" min="-180" max="180" step="1">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Exposure</span><output data-o="exposure"></output></div>
+      <input type="range" data-k="exposure" min="0.3" max="2.5" step="0.01">
+    </div>
+    <div class="row">
+      <div class="lab"><span>Hover tilt</span><output data-o="tilt"></output></div>
+      <input type="range" data-k="tilt" min="0" max="35" step="0.5">
+    </div>
+    <label class="check"><input type="checkbox" data-k="idle">Idle float when the mouse is away</label>
+    <div class="two row">
+      <label class="color"><input type="color" data-k="bg"><span>Background</span></label>
+      <label class="check" style="margin:0"><input type="checkbox" data-k="transparent">Transparent</label>
+    </div>
+    <div class="btns">
+      <button class="btn primary" id="flipBtn">Flip pack</button>
+      <button class="btn" id="viewBtn">Reset view</button>
+    </div>
+    <div class="btns">
+      <button class="btn accent" id="pngBtn">Export PNG</button>
+      <button class="btn" id="tplAllBtn">All templates</button>
+    </div>
+    <div class="btns">
+      <button class="btn" id="saveBtn">Save project</button>
+      <button class="btn" id="openBtn">Open project</button>
+    </div>
+    <button class="btn danger row" id="resetBtn">Reset everything</button>
+    <div class="keys">
+      <b>Hover</b><span>the pack tilts towards the pointer</span>
+      <b>Click</b><span>flip front ⇄ back</span>
+      <b>F / Space</b><span>flip</span>
+      <b>Wheel</b><span>zoom · double-click: reset view</span>
+      <b>G</b><span>guides on / off</span>
+    </div>
+  </section>
+  <input type="file" id="fileIn" accept="image/*" hidden>
+  <input type="file" id="jsonIn" accept=".json,application/json" hidden>
+</aside>
+
+<main>
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="empty"><b>Load the artwork</b> from the panel — or drop an image here</div>
+    <div id="drop">Drop to apply to this side</div>
+    <div id="hud"></div>
+    <div id="toast"></div>
+    <div id="err"></div>
+  </div>
+</main>
+
+<script src="vendor/three.bundle.js"></script>
+<script src="artwork.js"></script>
+<script src="boosterPack.js"></script>
+</body>
+</html>
